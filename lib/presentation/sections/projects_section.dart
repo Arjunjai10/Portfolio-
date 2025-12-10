@@ -15,6 +15,7 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
+      
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
