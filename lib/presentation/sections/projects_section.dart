@@ -6,6 +6,8 @@ import 'package:my_portfolio/presentation/widgets/glass_card.dart';
 import 'package:my_portfolio/presentation/widgets/section_container.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:my_portfolio/presentation/widgets/tilt_card.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
@@ -63,13 +65,44 @@ class ProjectCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Text(
-                project.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      project.title,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                  ),
+                  if (project.link != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: IconButton(
+                        onPressed: () => launchUrl(Uri.parse(project.link!)),
+                        icon: const FaIcon(FontAwesomeIcons.github, size: 20),
+                        tooltip: "View Code",
+                        style: IconButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ),
+                    ),
+                  if (project.apkLink != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: IconButton(
+                        onPressed: () => launchUrl(Uri.parse(project.apkLink!)),
+                        icon: const Icon(Icons.android, size: 20, color: Colors.green),
+                        tooltip: "Download APK",
+                        style: IconButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 8),
               Text(
@@ -107,6 +140,8 @@ class ProjectCard extends StatelessWidget {
                   );
                 }).toList(),
               ),
+
+
             ],
             ),
           ),

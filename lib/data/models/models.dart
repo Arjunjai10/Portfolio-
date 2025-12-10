@@ -34,6 +34,7 @@ class Project {
   final String period;
   final List<String> technologies;
   final String? link;
+  final String? apkLink;
 
   Project({
     required this.title,
@@ -41,6 +42,7 @@ class Project {
     required this.period,
     required this.technologies,
     this.link,
+    this.apkLink,
   });
 }
 

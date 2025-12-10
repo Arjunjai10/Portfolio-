@@ -50,7 +50,7 @@ class _GlassCardState extends State<GlassCard> {
                   color: (widget.color ?? Theme.of(context).colorScheme.surface).withValues(alpha: widget.opacity),
                   borderRadius: borderRadius,
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                     width: 1.0,
                   ),
                 ),

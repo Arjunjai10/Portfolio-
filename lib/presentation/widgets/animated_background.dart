@@ -11,7 +11,7 @@ class AnimatedBackground extends StatefulWidget {
 
 class _AnimatedBackgroundState extends State<AnimatedBackground> with SingleTickerProviderStateMixin {
   late Ticker _ticker;
-  final List<Particle> _particles = [];
+  final List<Star> _stars = [];
   final Random _random = Random();
 
   @override
@@ -20,8 +20,8 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> with SingleTick
     _ticker = createTicker((elapsed) {
       if (mounted) {
         setState(() {
-          for (var particle in _particles) {
-            particle.update();
+          for (var star in _stars) {
+            star.update();
           }
         });
       }
@@ -32,15 +32,15 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> with SingleTick
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_particles.isEmpty) {
+    if (_stars.isEmpty) {
       final size = MediaQuery.of(context).size;
-      for (int i = 0; i < 30; i++) {
-        _particles.add(Particle(
+      for (int i = 0; i < 100; i++) { // More stars
+        _stars.add(Star(
           x: _random.nextDouble() * size.width,
           y: _random.nextDouble() * size.height,
-          vx: _random.nextDouble() * 1.5 - 0.75,
-          vy: _random.nextDouble() * 1.5 - 0.75,
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+          speed: 1 + _random.nextDouble() * 4, // Horizontal speed
+          size: 2 + _random.nextDouble() * 3, // Variable pixel size
+          color: Colors.white.withValues(alpha: 0.2 + _random.nextDouble() * 0.6),
         ));
       }
     }
@@ -55,83 +55,46 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> with SingleTick
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.surface, // Base background
+      color: Theme.of(context).scaffoldBackgroundColor, 
       child: CustomPaint(
-        painter: ParticleNetworkPainter(
-          particles: _particles,
-          lineColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-        ),
+        painter: StarfieldPainter(stars: _stars),
         child: Container(),
       ),
     );
   }
 }
 
-class Particle {
-  double x, y, vx, vy;
+class Star {
+  double x, y, speed, size;
   Color color;
 
-  Particle({required this.x, required this.y, required this.vx, required this.vy, required this.color});
+  Star({required this.x, required this.y, required this.speed, required this.size, required this.color});
 
   void update() {
-    x += vx;
-    y += vy;
-
-    // Bounce off edges (simplified wrapped for seamless look or bounce)
-    // Let's bounce:
-    // Actually, wrap sounds cooler for network.
-    // If we bounce we need screen size, let's just bounce conceptually - wait, we don't have screen size in update easily.
-    // Let's pass bounds or simple logic: if x > 2000 (rough max) reset. 
-    // Wait, simpler: just let them drift and if they go too far, wrap them.
-    // Ideally we need screen size. For now let's just let them move, the painter handles drawing.
-    // We can assume a large enough canvas or pass bounds.
-    // Let's just make them bounce effectively by checking rough bounds or simple sine wave motion relative to origin?
-    // No, linear motion is best for tech.
-    // Let's just re-initialize if out of bounds in Painter? No, keep logic here.
-    // We will assume 1920x1080 approx for bounds or pass it.
-    // Actually, let's just use a fixed large bounds for now.
-    
-    if (x < 0 || x > 3000) vx = -vx; 
-    if (y < 0 || y > 3000) vy = -vy;
+    x -= speed; // Move Left
+    if (x < 0) {
+      x = 4000; // Loop back far right (assuming large screen)
+      y = Random().nextDouble() * 3000; // Random Y
+    }
   }
 }
 
-class ParticleNetworkPainter extends CustomPainter {
-  final List<Particle> particles;
-  final Color lineColor;
+class StarfieldPainter extends CustomPainter {
+  final List<Star> stars;
 
-  ParticleNetworkPainter({required this.particles, required this.lineColor});
+  StarfieldPainter({required this.stars});
 
   @override
   void paint(Canvas canvas, Size size) {
-     // Update bounds check here effectively
-     for (var p in particles) {
-       if (p.x < 0) p.x = size.width;
-       if (p.x > size.width) p.x = 0;
-       if (p.y < 0) p.y = size.height;
-       if (p.y > size.height) p.y = 0;
+     for (var s in stars) {
+       // Loop logic is handled in update(), just ensuring it's within view if needed, 
+       // but typically we trust the update logic or just draw.
        
-       // Draw particle
-       canvas.drawCircle(Offset(p.x, p.y), 3.0, Paint()..color = p.color);
-     }
-
-     // Draw lines
-     for (int i = 0; i < particles.length; i++) {
-       for (int j = i + 1; j < particles.length; j++) {
-         var p1 = particles[i];
-         var p2 = particles[j];
-         var dx = p1.x - p2.x;
-         var dy = p1.y - p2.y;
-         var dist = sqrt(dx * dx + dy * dy);
-
-         if (dist < 150) {
-           canvas.drawLine(
-             Offset(p1.x, p1.y),
-             Offset(p2.x, p2.y),
-             Paint()..color = lineColor.withValues(alpha: (1 - dist / 150) * 0.3)..strokeWidth = 1,
-           );
-         }
-       }
+       canvas.drawCircle(
+         Offset(s.x, s.y),
+         s.size / 2, // Radius is half the size
+         Paint()..color = s.color,
+       );
      }
   }
 

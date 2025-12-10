@@ -171,7 +171,8 @@ class CertificationCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                             letterSpacing: 0.5,
-                            color: Colors.white.withOpacity(0.9),
+                            // Use theme color (black in light, white in dark)
+                            color: Theme.of(context).textTheme.titleMedium?.color,
                           ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -181,7 +182,8 @@ class CertificationCard extends StatelessWidget {
                       "VERIFIED CERTIFICATION", 
                       style: TextStyle(
                         fontSize: 10,
-                        color: const Color(0xFFFFD700).withOpacity(0.8),
+                        // Use primary color (purple) or a darker gold that works on white
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
                       ),

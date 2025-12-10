@@ -55,6 +55,7 @@ class PortfolioData {
           "Built a secure, personalized movie recommendation web app with JWT authentication, intuitive UI, and search/filter features.",
       period: "2025",
       technologies: ["MERN Stack", "JWT"],
+      link: "https://github.com/Arjunjai10/Movie-Recommendation", // Placeholder
     ),
     Project(
       title: "Blogging Platform",
@@ -62,6 +63,7 @@ class PortfolioData {
           "Developed a responsive platform for users to create, edit, and manage blog posts with a dynamic interface and optimized backend APIs.",
       period: "2025",
       technologies: ["MERN Stack"],
+      link: "https://github.com/Arjunjai10/Blogging-Platform", // Placeholder
     ),
     Project(
       title: "SkyCast-Flutter Weather App",
@@ -69,6 +71,8 @@ class PortfolioData {
           "Developed a cross-platform weather application that provides real-time weather forecast, location based features, dynamic layouts and interactive weather effects.",
       period: "2025",
       technologies: ["Flutter", "Dart", "Weather API"],
+      link: "https://github.com/Arjunjai10/SkyCast", // Placeholder
+      apkLink: "https://github.com/Arjunjai10/SkyCast/releases/download/v1.0.0/app-release.apk", // Placeholder APK link
     ),
   ];
 

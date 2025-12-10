@@ -39,7 +39,8 @@ class HomeSection extends StatelessWidget {
               const SizedBox(height: 16),
               DefaultTextStyle(
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                      // Use headlineMedium color which is correctly contrasted (black in light, white in dark)
+                      color: Theme.of(context).textTheme.headlineMedium?.color, 
                       fontFamily: Theme.of(context).textTheme.headlineMedium?.fontFamily,
                     ),
                 child: AnimatedTextKit(
